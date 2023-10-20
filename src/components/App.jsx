@@ -17,7 +17,27 @@ class App extends Component{
 
 }
 arrContacts = [...this.state.contacts];  
-   
+
+
+componentDidMount() {
+const dataLocalStorage = localStorage.getItem("contacts list");
+const NewContactsList= JSON.parse(dataLocalStorage);
+// console.log(NewContactsList);
+  if(NewContactsList){
+    this.setState({contacts:NewContactsList});
+  }
+};
+
+componentDidUpdate(prevProps, prevState){
+  
+const contacts = this.state.contacts;
+if(contacts !== prevState.contacts){
+
+localStorage.setItem("contacts list",JSON.stringify(contacts))
+};
+
+}
+  
 pushedContacts = (newContact) => {
   this.arrContacts = [...this.state.contacts];
 
