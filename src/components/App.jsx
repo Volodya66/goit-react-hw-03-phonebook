@@ -16,7 +16,7 @@ class App extends Component{
   filter: ''
 
 }
-arrContacts = [...this.state.contacts];  
+// arrContacts = [...this.state.contacts];  
 
 
 componentDidMount() {
@@ -39,10 +39,10 @@ localStorage.setItem("contacts list",JSON.stringify(contacts))
 }
   
 pushedContacts = (newContact) => {
-  this.arrContacts = [...this.state.contacts];
+ const arrContacts = [...this.state.contacts];
 
   const namePerson = newContact.name;
-  const condition = this.arrContacts.some(contact => contact.name.toLowerCase() === namePerson.toLowerCase());
+  const condition = arrContacts.some(contact => contact.name.toLowerCase() === namePerson.toLowerCase());
  
 if (condition) {
    alert(`${namePerson} is already in contacts`);
@@ -57,14 +57,17 @@ if (condition) {
 filterContacts = (evt) => {
   const param = evt.target.value;
   this.setState({ filter:param });
-   
-  const filteredContacts = this.arrContacts.filter((contact) => {
-    return contact.name.toLowerCase().includes(param.toLowerCase());
-  });
-  
-  this.setState({ contacts: filteredContacts });
+
 }
 
+actualNames=()=>{
+  const arrContacts = this.state.contacts;
+  const contacts = this.state.filter.toLowerCase();
+ 
+  const filteredContacts = arrContacts.filter(contact => contact.name.toLowerCase().includes(contacts));
+  return filteredContacts;
+}
+  
 handlerContactDelete = (evt) => {
 const deleteContactId = evt.target.getAttribute('id');
 
@@ -91,7 +94,7 @@ this.setState(prevState => {
   <Filter 
   value={this.state.filter} 
   parameterTracker={this.filterContacts} />
-  <ContactList deleteContact={this.handlerContactDelete}  contacts={this.state.contacts} />
+  <ContactList deleteContact={this.handlerContactDelete}  contacts={this.actualNames()} />
  
 </div>
     )
